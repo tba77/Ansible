@@ -1,0 +1,12 @@
+---
+- name: Remove user deploy Privileges from sudoers after installation
+  hosts: "{{ host_name }}"
+  remote_user: "{{ user_name }}"
+  become: yes
+
+  tasks:
+    - name: Make sure group wheel is not in the sudoers configuration
+      lineinfile:
+        path: /etc/sudoers
+        state: absent
+        regexp: '^deploy'

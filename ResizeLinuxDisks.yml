@@ -1,0 +1,45 @@
+---
+- name: Resize Linux disks
+  hosts: "{{ host_name }}"
+  remote_user: "{{ remote_user }}"
+  #become: yes
+  #become_method: "sudo"
+  
+  vars: 
+    - vg_name: "{{ vg_name }}"
+    - lv_swap: "{{ lv_swap }}"
+    - lv_swap_size: 8g
+    - lv_root: root
+    - primary_disk: "{{ primary_disk}}"
+
+  tasks:
+  - name: Resize Primary physical disk with pvresize
+    command: pvresize {{ primary_disk }}
+    
+  - name: Turn swap Off
+    command: swapoff -va
+  
+  - name: Extend Swap partition
+    lvol:
+      vg: "{{ vg_name }}"
+      lv: "{{ lv_swap }}"
+      size: "{{ lv_swap_size }}"
+
+  - name: Turn swap On
+    command: swapon -va
+
+  - name: Extend the logical volume to consume all remaining space in the volume group
+    lvol:
+      vg: "{{ vg_name }}"
+      lv: "{{ lv_root }}"
+      size: +100%FREE
+
+  - name: Resize root volume
+    command: xfs_growfs /
+    when: 
+      - ansible_facts['os_family'] == "RedHat"
+  
+  - name: Resize root volume
+    command: resize2fs /dev/{{ vg_name}}/{{ lv_root }}
+    when: 
+      - ansible_facts['distribution'] == "Debian"

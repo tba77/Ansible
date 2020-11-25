@@ -1,0 +1,11 @@
+---
+- name: Extend Windows partition to its maximum
+  hosts: "{{ host_name }}"
+  remote_user: Administrateur
+
+  tasks:
+  - name: Resize windows disk0 partition
+    win_partition:
+        partition_size: -1
+        partition_number: 2
+        disk_number: 0
