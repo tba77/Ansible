@@ -1,7 +1,7 @@
 ---
 - name: Remove user deploy Privileges from sudoers after installation
-  hosts: "{{ host_name }}"
-  remote_user: "{{ user_name }}"
+  hosts: "{{ remote_host }}"
+  remote_user: "{{ remote_login }}"
   become: yes
 
   tasks:

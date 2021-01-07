@@ -1,6 +1,6 @@
 ---
 - name: Extend Windows partition to its maximum
-  hosts: "{{ host_name }}"
+  hosts: "{{ remote_host }}"
   remote_user: Administrateur
 
   tasks:

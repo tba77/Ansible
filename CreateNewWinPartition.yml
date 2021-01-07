@@ -1,6 +1,6 @@
 ---
 - name: Create New Partition on second HD
-  hosts: "{{ host_name }}"
+  hosts: "{{ remote_host }}"
   remote_user: Administrateur
 
   vars:

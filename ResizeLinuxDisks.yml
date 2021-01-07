@@ -1,6 +1,6 @@
 ---
 - name: Resize Linux disks
-  hosts: "{{ host_name }}"
+  hosts: "{{ remote_host }}"
   remote_user: "{{ remote_login }}"
   gather_facts: true
   become: yes
