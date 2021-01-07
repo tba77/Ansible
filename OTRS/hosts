@@ -1,0 +1,2 @@
+[ servers ]
+otrs    ansible_host=172.16.103.x 
