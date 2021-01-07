@@ -13,7 +13,7 @@ You have to first enable winrm for windows servers it's disabled by default
 I will cover only installation on linux and Mac OS as I didn't try on windows system
 
 * Install python3-pip `apt install python3-pip` or `yum install python3 python3-pip`
-* Install ansible `pip3 install ansible
+* Install ansible `pip3 install ansible`
 * Install pywinrm version >= 0.2.2 `pip3 install "pywinrm>=0.2.2"` otherwise you'll get an error about winrm not avaiblable
 
 ## Execute scripts
@@ -37,12 +37,12 @@ ansible_winrm_server_cert_validation=ignore
 
 To execute script for example I would like to extend my C drive 
 
-`ansible-playbook -i PATH_TO_MY_INVENTORY resizeDiskScript.yaml --extra-vars "host_name=MyWindowsServer"`
+`ansible-playbook -i PATH_TO_MY_INVENTORY resizeDiskScript.yaml --extra-vars "remote_host=MyWindowsServer"`
 
 I am using extra_vars attribute because I provision a lot of servers daily so my inventory changes every day so I can add variable when executing my scripts
 
 On linux let's add our public ssh key to avoid asking for password 
 
-`ansible-playbook -i PATH_TO_INVENTORY addkey.yaml --extra-vars "host_name=MyLinuServer" --ask-pass`
+`ansible-playbook -i PATH_TO_INVENTORY addkey.yaml --extra-vars "remote_host=MyLinuxServer" --ask-pass`
 
 
