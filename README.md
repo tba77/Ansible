@@ -13,7 +13,7 @@ You have to first enable winrm for windows servers it's disabled by default
 I will cover only installation on linux and Mac OS as I didn't try on windows system
 
 * Install python3-pip `apt install python3-pip` or `yum install python3 python3-pip`
-* Install ansible `pip3 install ansible
+* Install ansible `pip3 install ansible`
 * Install pywinrm version >= 0.2.2 `pip3 install "pywinrm>=0.2.2"` otherwise you'll get an error about winrm not avaiblable
 
 ## Execute scripts
