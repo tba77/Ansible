@@ -1,2 +1,2 @@
 [ servers ]
-otrs    ansible_host=172.16.103.x 
+otrs    ansible_host=192.16.1.x 
