@@ -1,0 +1,9 @@
+---
+  - name: testing encrypting passwords in inventory
+    hosts: Linux-Servers
+    remote_user: tahar
+
+    tasks:
+    - name: Show message
+      ansible.builtin.debug:
+        msg: System {{ inventory_hostname }} has gateway {{ ansible_default_ipv4.gateway }}
