@@ -2,7 +2,7 @@
 - name: Remove user deploy Privileges from sudoers after installation
   hosts: "{{ remote_host }}"
   remote_user: "{{ remote_login }}"
-  become: yes
+  become: true
 
   tasks:
     - name: Make sure group wheel is not in the sudoers configuration

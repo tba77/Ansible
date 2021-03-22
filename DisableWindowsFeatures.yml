@@ -1,15 +1,13 @@
 ---
 # Disable windows features with ansible.windows.win_optional_feature:
-
-- name: Disable windows Features 
+- name: Disable windows Features
   hosts: WindowsServers
-  remote_user: 
+  remote_user:
   become_method: runas
-  become: yes
+  become: true
 
   tasks:
-
-  - name : Disable SMB1 
-    ansible.windows.win_optional_feature:
-      name: smb1protocol
-      state: absent
+    - name: Disable SMB1
+      ansible.windows.win_optional_feature:
+        name: smb1protocol
+        state: absent

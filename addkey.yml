@@ -1,15 +1,14 @@
 ---
-#to use this playbook just lanch the commande ansible-playbook -i inventory addkey.yml --ask-passssh 
-
+# to use this playbook just lanch the commande ansible-playbook -i inventory addkey.yml --ask-passssh
 - name: push public key on all servers
   hosts: "{{ remote_host }}"
   remote_user: "{{ remote_login }}"
-  #become: yes
-  #become_method: "sudo"
+  # become: yes
+  # become_method: "sudo"
 
   tasks:
   - name: Set authorized key taken from file
     authorized_key:
-       user: "{{ remote_login }}"
-       state: present
-       key: "{{ lookup('file', '~/.ssh/id_rsa.pub') }}"
+      user: "{{ remote_login }}"
+      state: present
+      key: "{{ lookup('file', '~/.ssh/id_rsa.pub') }}"

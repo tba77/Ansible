@@ -2,30 +2,27 @@
 - name: Create New Partition on second HD
   hosts: "{{ remote_host }}"
   remote_user: Administrateur
-
   vars:
     - disk_number: 1
     - drive_letter: E
     - fs: NTFS
-  
   tasks:
+    - name: Get disk facts
+      win_disk_facts:
 
-  - name: Get disk facts
-    win_disk_facts:
+    - name: Initialize Disk
+      win_shell: "Initialize-Disk -Number {{ disk_number }}"
+      when: ansible_disks[disk_number].guid is none
 
-  - name: Initialize Disk
-    win_shell: "Initialize-Disk -Number {{ disk_number }}"
-    when: ansible_disks[disk_number].guid is none
+    - name: Create Partition using all available space
+      win_partition:
+        drive_letter: "{{ drive_letter }}"
+        partition_size: -1
+        disk_number: "{{ disk_number }}"
+      when: ansible_disks[disk_number].guid is none
 
-  - name: Create Partition using all available space
-    win_partition:
-      drive_letter: "{{ drive_letter }}"
-      partition_size: -1
-      disk_number: "{{ disk_number }}"
-    when: ansible_disks[disk_number].guid is none
-
-  - name: Format New created partition
-    win_format:
-      drive_letter: "{{ drive_letter }}"
-      file_system: "{{ fs }}"
-      full: True
+    - name: Format New created partition
+      win_format:
+        drive_letter: "{{ drive_letter }}"
+        file_system: "{{ fs }}"
+        full: true

@@ -1,6 +1,5 @@
 ---
 
-
 LocalServers:
   hosts:
     MyLocalServer:
@@ -12,14 +11,18 @@ LinuxServers:
   hosts:
     LinuxServerName:
       ansible_host: 10.10.20.20
-      ansible_ssh_pass: "{{ LinuxServerName_ssh_pass }}"
-    
+      ansible_ssh_pass: "{{ MyLoalServer_ssh_pass }}"
+
+    LinuxServerName2:
+      ansible_host: 10.10.20.21
+      ansible_ssh_pass: "{{ LinuxServerName2_ssh_pass }}"
+
 WindowsServers:
   hosts:
     WindowsServerName:
       ansible_host: 10.10.30.30
       ansible_password: "{{ WindowsServerName_password }}"
-    vars:
-      ansible_user: vagrant
-      ansible_connection: winrm
-      ansible_winrm_server_cert_validation: ignore
+  vars:
+    ansible_user: vagrant
+    ansible_connection: winrm
+    ansible_winrm_server_cert_validation: ignore

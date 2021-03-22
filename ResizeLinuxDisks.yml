@@ -3,74 +3,74 @@
   hosts: "{{ remote_host }}"
   remote_user: "{{ remote_login }}"
   gather_facts: true
-  become: yes
+  become: true
   become_method: "sudo"
-  
-  vars: 
+
+  vars:
     - rh_vg_name: "centos"
     - deb_vg_name: "{{ ansible_hostname }}-vg"
     - rh_lv_swap: "/dev/{{ rh_vg_name }}/swap"
     - deb_lv_swap: "/dev/{{ deb_vg_name }}/swap_1"
-    - lv_swap_size: 8g
+    - lv_swap_size: 4g
     - lv_root: root
     - rh_primary_disk: "/dev/sda2"
     - deb_primary_disk: "/dev/sda5"
 
   tasks:
-  - name: Resize Primary physical disk with pvresize
-    command: pvresize {{ rh_primary_disk }}
-    when: 
-    - ansible_facts['os_family'] == "RedHat"
-  
-  - name: Resize Primary physical disk with pvresize
-    command: pvresize {{ deb_primary_disk }}
-    when: 
-    - ansible_facts['os_family'] == "Debian"
-    
-  - name: Turn swap Off
-    command: swapoff -va
-  
-  - name: Extend Swap partition
-    lvol:
-      vg: "{{ rh_vg_name }}"
-      lv: "{{ rh_lv_swap }}"
-      size: "{{ lv_swap_size }}"
-    when:
-      - ansible_facts['os_family'] == "RedHat"
-  
-  - name: Extend Swap partition
-    lvol:
-      vg: "{{ deb_vg_name }}"
-      lv: "{{ deb_lv_swap }}"
-      size: "{{ deb_lv_swap_size }}"
-    when: 
-      - ansible_facts['os_family'] == "Debian"
+    - name: Resize Primary physical disk with pvresize
+      command: pvresize {{ rh_primary_disk }}
+      when:
+        - ansible_facts['os_family'] == "RedHat"
 
-  - name: Turn swap On
-    command: swapon -va
+    - name: Resize Primary physical disk with pvresize
+      command: pvresize {{ deb_primary_disk }}
+      when:
+        - ansible_facts['os_family'] == "Debian"
 
-  - name: Extend the logical volume to use all remaining space
-    lvol:
-      vg: "{{ rh_vg_name }}"
-      lv: "{{ lv_root }}"
-      size: +100%FREE
-    when:
-      - ansible_facts['os_family'] == "RedHat"
+    - name: Turn swap Off
+      command: swapoff -va
 
-  - name: Extend the logical volume to use all remaining space
-    lvol:
-      vg: "{{ deb_vg_name }}"
-      lv: "{{ lv_root }}"
-      size: +100%FREE
-    when:
-      - ansible_facts['os_family'] == "Debian"
+    - name: Extend Swap partition
+      lvol:
+        vg: "{{ rh_vg_name }}"
+        lv: "{{ rh_lv_swap }}"
+        size: "{{ lv_swap_size }}"
+      when:
+        - ansible_facts['os_family'] == "RedHat"
 
-  - name: Resize root volume
-    command: xfs_growfs /
-    when: 
-      - ansible_facts['os_family'] == "RedHat"
-  
-  - name: Resize root volume
-    command: resize2fs /dev/{{ deb_vg_name}}/{{ lv_root }}
-    when: 
-      - ansible_facts['distribution'] == "Debian"
+    - name: Extend Swap partition
+      lvol:
+        vg: "{{ deb_vg_name }}"
+        lv: "{{ deb_lv_swap }}"
+        size: "{{ deb_lv_swap_size }}"
+      when:
+        - ansible_facts['os_family'] == "Debian"
+
+    - name: Turn swap On
+      command: swapon -va
+
+    - name: Extend the logical volume to use all remaining space
+      lvol:
+        vg: "{{ rh_vg_name }}"
+        lv: "{{ lv_root }}"
+        size: +100%FREE
+      when:
+        - ansible_facts['os_family'] == "RedHat"
+
+    - name: Extend the logical volume to use all remaining space
+      lvol:
+        vg: "{{ deb_vg_name }}"
+        lv: "{{ lv_root }}"
+        size: +100%FREE
+      when:
+        - ansible_facts['os_family'] == "Debian"
+
+    - name: Resize root volume
+      command: xfs_growfs /
+      when:
+        - ansible_facts['os_family'] == "RedHat"
+
+    - name: Resize root volume
+      command: resize2fs /dev/{{ deb_vg_name }}/{{ lv_root }}
+      when:
+        - ansible_facts['distribution'] == "Debian"
