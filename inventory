@@ -1,0 +1,11 @@
+[linux-servers]
+Demo-Centos      ansible_host=x.x.x.x
+
+
+[windows-servers]
+
+
+[wiindows-servers:vars]
+ansible_user: vagrant
+ansible_connection: winrm
+ansible_winrm_server_cert_validation: ignore

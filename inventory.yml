@@ -12,7 +12,9 @@ LinuxServers:
     LinuxServerName:
       ansible_host: 10.10.20.20
       ansible_ssh_pass: "{{ MyLoalServer_ssh_pass }}"
-
+    RH-SRV: 
+      ansible_host: 10.1.12.201
+      
     LinuxServerName2:
       ansible_host: 10.10.20.21
       ansible_ssh_pass: "{{ LinuxServerName2_ssh_pass }}"

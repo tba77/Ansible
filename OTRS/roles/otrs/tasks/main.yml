@@ -2,7 +2,7 @@
 # tasks file for otrs
 
 - name: Ensure curl is installed
-  yum: 
+  yum:
     name: curl
     state: present
   when: ansible_facts['os_family'] == "RedHat"
@@ -13,7 +13,7 @@
     dest: /root/
     mode: '755'
 
-- name: Enable official MariaDB Repo 
+- name: Enable official MariaDB Repo
   command: ./mariadb_repo_setup
 
 - name: Install MariaDB 10.4 packages
@@ -22,10 +22,10 @@
     state: present
 
 - name: Start and enable MariaDB
-  service: 
+  service:
     name: mariadb
     state: started
-    enabled: yes
+    enabled: true
 
 - name: Configure mariadb with zotrs.cnf
   template:
@@ -33,8 +33,8 @@
     dest: /etc/my.cnf.d/zotrs.cnf
   notify: Restart MariaDB
 
-#- name: Set MariaDB Character to UTF8
-#  template: 
+# - name: Set MariaDB Character to UTF8
+#  template:
 #    src: server.cnf.j2
 #    dest: /etc/my.cnf.d/server.cnf
 #  notify: Restart MariaDB
@@ -45,46 +45,49 @@
 
 - name: configure MySQL root password
   community.mysql.mysql_user:
-#    login_host: "localhost"
+    # login_host: "localhost"
     login_unix_socket: /var/lib/mysql/mysql.sock
-#    login_user: "root"
-#    login_password: ""
+    # login_user: "root"
+    # login_password: ""
     name: root
     password: "{{ mysql_password }}"
     state: present
 
 - name: install otrs package
   yum:
-    name:  https://ftp.otrs.org/pub/otrs/RPMS/rhel/7/otrs-6.0.30-02.noarch.rpm
+    name: https://ftp.otrs.org/pub/otrs/RPMS/rhel/7/otrs-6.0.30-02.noarch.rpm
     state: present
 
 - name: Start and enable Apache
-  service: 
+  service:
     name: httpd
     state: started
-    enabled: yes
+    enabled: true
 
 - name: install additional packages
   yum:
-    name: [ "perl-DBD-mysql", "perl-App-cpanminus.noarch", "perl(Text::CSV_XS)", "perl(ModPerl::Util)", "perl(YAML::XS)", "perl(JSON::XS)", "perl(Authen::NTLM)", "perl(Mail::IMAPClient)", "perl(Crypt::Eksblowfish::Bcrypt)", "perl(Encode::HanExtra)" ] 
+    name: >
+      ["perl-DBD-mysql", "perl-App-cpanminus.noarch", "perl(Text::CSV_XS)", "perl(ModPerl::Util)",
+      "perl(YAML::XS)", "perl(JSON::XS)", "perl(Authen::NTLM)", "perl(Mail::IMAPClient)",
+      "perl(Crypt::Eksblowfish::Bcrypt)", "perl(Encode::HanExtra)"]
     state: present
 
 - name: Install getpagespeed package
-  yum: 
+  yum:
     name: "https://extras.getpagespeed.com/release-el7-latest.rpm"
     state: present
 
-- name : Install Perl-Moo
-  yum: 
-    name: [ "perl-Moo" ]
+- name: Install Perl-Moo
+  yum:
+    name: ["perl-Moo"]
     state: present
 
 - name: Install required version of IO::Socket::SSL
   community.general.cpanm:
     name: "IO::Socket::SSL"
     version: "2.068"
-#- name: Install Net::SMTP 
-#  community.general.cpanm:
+# - name: Install Net::SMTP
+#   community.general.cpanm:
 #    name: "Net::SMTP"
 #    version: "3.11"
 

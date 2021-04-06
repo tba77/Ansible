@@ -7,7 +7,7 @@
   become_method: "sudo"
 
   vars:
-    - rh_vg_name: "centos"
+    - rh_vg_name: "centos_centos"
     - deb_vg_name: "{{ ansible_hostname }}-vg"
     - rh_lv_swap: "/dev/{{ rh_vg_name }}/swap"
     - deb_lv_swap: "/dev/{{ deb_vg_name }}/swap_1"
@@ -17,6 +17,16 @@
     - deb_primary_disk: "/dev/sda5"
 
   tasks:
+    - name: Resize paritions with parted "using script extendlvm.sh"
+      command: ~/extendlvm.sh /dev/sda 2 apply
+      when: 
+      - ansible_facts['os_family'] == "RedHat"
+
+    - name: Resize paritions with parted "using script extendlvm.sh"
+      command: ~/extendlvm.sh /dev/sda 5 apply
+      when: 
+      - ansible_facts['os_family'] == "Debian"
+
     - name: Resize Primary physical disk with pvresize
       command: pvresize {{ rh_primary_disk }}
       when:

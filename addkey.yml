@@ -1,5 +1,5 @@
 ---
-# to use this playbook just lanch the commande ansible-playbook -i inventory addkey.yml --ask-passssh
+#to use this playbook just lanch the commande ansible-playbook -i inventory addkey.yml --ask-passssh
 - name: push public key on all servers
   hosts: "{{ remote_host }}"
   remote_user: "{{ remote_login }}"

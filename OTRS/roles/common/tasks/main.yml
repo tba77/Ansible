@@ -1,23 +1,23 @@
 ---
 # tasks file for common
 - name: Install Epel repository and needed packages
-  yum: 
-    name: [ "epel-release", "chrony", "bash-completion", "vim", "perl" ]
+  yum:
+    name: ["epel-release", "chrony", "bash-completion", "vim", "perl"]
     state: present
 
 - name: start ntp service
-  service: 
-     name: chronyd 
-     state: started 
-     enabled: yes
-  
+  service:
+    name: chronyd
+    state: started
+    enabled: true
+
 - name: disable Selinux
-  selinux: 
+  selinux:
     state: disabled
-  
+
 - name: Copy NTP config file
-  template: 
-    src: chrony.conf.j2 
+  template:
+    src: chrony.conf.j2
     dest: "{{ ntp_dir }}/chrony.conf"
   notify: restart chronyd
 
@@ -34,6 +34,6 @@
     state: enabled
 
 - name: Restart Firewalld
-  service: 
+  service:
     name: firewalld
     state: restarted
