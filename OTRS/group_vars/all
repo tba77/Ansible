@@ -1,3 +1,0 @@
-ntp_server_ip: 192.168.1.2
-ntp_dir: /etc
-mysql_password: MYSQL_PASSWORD

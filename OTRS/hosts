@@ -1,2 +1,0 @@
-[ servers ]
-otrs    ansible_host=192.16.1.x 
