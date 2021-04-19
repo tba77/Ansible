@@ -11,12 +11,30 @@
     - deb_vg_name: "{{ ansible_hostname }}-vg"
     - rh_lv_swap: "/dev/{{ rh_vg_name }}/swap"
     - deb_lv_swap: "/dev/{{ deb_vg_name }}/swap_1"
-    - lv_swap_size: 4g
+    - lv_swap_size: "{{ swap_size }}"
     - lv_root: root
     - rh_primary_disk: "/dev/sda2"
     - deb_primary_disk: "/dev/sda5"
+    - rh_root: "/root"
+    - deb_root: "/home/deploy"
 
   tasks:
+    - name: copy patition resize script to server
+      template:
+        src: resize.sh
+        dest: "{{ rh_root }}/extendlvm.sh"
+        mode: "711"
+      when:
+        - ansible_facts['os_family'] == "RedHat"
+
+    - name: copy patition resize script to server
+      template:
+        src: resize.sh
+        dest: "{{ deb_root }}/extendlvm.sh"
+        mode: "711"
+      when:
+        - ansible_facts['os_family'] == "Debian"
+
     - name: Resize paritions with parted "using script extendlvm.sh"
       command: ~/extendlvm.sh /dev/sda 2 apply
       when: 

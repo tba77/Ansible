@@ -1,0 +1,11 @@
+- name: Generate an OpenSSH keypair
+  hosts: "{{ remote_host }}"
+  remote_user: "{{ remote_login }}"
+
+  tasks:
+
+  - name: Regenerate SSH Keys
+    community.crypto.openssh_keypair:
+      path: ~/.ssh/id_rsa
+      type: rsa
+      force: true

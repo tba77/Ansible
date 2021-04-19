@@ -5,6 +5,3 @@ inventaire.json
 inventory-sample.json
 inventory-sample.yml
 inventory.vmware.yml
-.gitignore
-
-OTRS/

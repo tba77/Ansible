@@ -1,23 +1,34 @@
 ---
-
-LocalServers:
-  hosts:
-    MyLocalServer:
-      ansible_host: 10.10.10.10
-      ansible_ssh_pass: "{{ MyLocalServer_ssh_pass }}"
-
-
-LinuxServers:
-  hosts:
-    LinuxServerName:
-      ansible_host: 10.10.20.20
-      ansible_ssh_pass: "{{ MyLoalServer_ssh_pass }}"
-    RH-SRV: 
-      ansible_host: 10.1.12.201
+all:
+  children:
+    LocalServers:
+        hosts:
+              MyLocalServer:
+                ansible_host: 10.10.10.10
+                ansible_ssh_pass: "{{ MyLocalServer_ssh_pass }}"
+    LinuxServers:
+      hosts:
+        LinuxServerName:
+          ansible_host: 10.10.20.20
+          ansible_ssh_pass: "{{ MyLoalServer_ssh_pass }}"
+        RH-SRV:
+          ansible_host: 10.1.12.201
+    kubernetes:
+      hosts:
+        Controller01:
+          ansible_host: 10.1.210.60
+        Controller02:
+          ansible_host: 10.1.210.61
+        Worker01:
+          ansible_host: 10.1.210.62
+        Workder02:
+          ansible_host: 10.1.210.63
+        Worker03:
+          ansible_host: 10.1.210.64
+        LoadBalancer:
+          ansible_host: 10.1.210.65
       
-    LinuxServerName2:
-      ansible_host: 10.10.20.21
-      ansible_ssh_pass: "{{ LinuxServerName2_ssh_pass }}"
+    
 
 WindowsServers:
   hosts:
