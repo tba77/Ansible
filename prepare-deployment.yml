@@ -1,0 +1,27 @@
+- name: Prepeare deployment for K8S
+  hosts: "{{ remote_host }}"
+  remote_user: "{{ remote_login }}"
+  become: true
+
+
+  tasks:
+    - name: Add user and generate sshkey
+      ansible.builtin.user:
+        name: deploy
+        generate_ssh_key: yes
+        ssh_key_bits: 2048
+        ssh_key_file: .ssh/id_rsa
+        password: "{{ password | password_hash('sha512') }}"
+
+    - name: Install sudo package
+      yum:
+        name: ["sudo"]
+        state: present
+
+    - name: Add deploy to sudo without password
+      ansible.builtin.lineinfile:
+        path: /etc/sudoers
+        state: present
+        insertafter: "^root   ALL="
+        line: "deploy   ALL=(ALL) NOPASSWD: ALL"
+        validate: /usr/sbin/visudo -cf %s
