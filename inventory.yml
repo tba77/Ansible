@@ -27,6 +27,8 @@ all:
           ansible_host: 10.1.210.64
         LoadBalancer:
           ansible_host: 10.1.210.65
+        VeeamProxy:
+          ansible_host: 10.1.210.20
       
     
 
