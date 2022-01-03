@@ -1,0 +1,25 @@
+---
+- name: Create demo user
+  hosts: localhost
+  become: yes
+  become_method: sudo
+
+  # python3 -c 'import crypt,getpass;pw=getpass.getpass();print(crypt.crypt(pw) if (pw==getpass.getpass("Confirm: ")) else exit())'
+  vars:
+    users:
+      - user: wafa
+        password: $6$y/mVLiIApUiMqNtA$RypiljN.uEYeDa5MmxyF3f64T3auL5La7AQUdZHY.QiRfITjpLf7kUVzBHDwTsMsbmw97H2tMrixtD9WhU1x6/
+      - user: tahar
+        password: $6$OxQg6icHAQ6zgw/5$V7znUoc6LdbO5KLclFoOaNT3U6SwAuK3eNhqVXb1RNidG8oYA5dWylUPYaN8sKaZeh0rfSyKg/.gauwWE3n/X.
+  tasks:
+    - name: Create user demo
+      user:
+        name: "{{ item.user }}"
+        shell: /bin/bash
+        createhome: yes
+        # group: wheel
+        generate_ssh_key: yes
+        ssh_key_bits: 2048
+        password: "{{ item.password }}"
+        update_password: always
+      with_items: "{{ users }}"
