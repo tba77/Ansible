@@ -1,6 +1,7 @@
 ---
 - name: Create demo user
   hosts: localhost
+  user: root
   become: yes
   become_method: sudo
 
