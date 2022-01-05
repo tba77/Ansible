@@ -1,7 +1,6 @@
 ---
 - name: Add Windows User
   hosts: "{{ remote_hosts }}"
-  
 
   vars:
     users:
@@ -22,6 +21,6 @@
         password: "{{item.password}}"
         state: present
         groups:
-        - Administrateurs
-        - Utilisateurs
+        - Administrators
+        - Users
     with_items: "{{users}}"

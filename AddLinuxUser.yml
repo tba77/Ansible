@@ -3,7 +3,7 @@
   hosts: "{{ remote_hosts }}"
   remote_user: root
   become: yes
-#   become_method: sudo
+  become_method: sudo
 
   # python3 -c 'import crypt,getpass;pw=getpass.getpass();print(crypt.crypt(pw) if (pw==getpass.getpass("Confirm: ")) else exit())'
   vars:
