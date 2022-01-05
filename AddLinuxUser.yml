@@ -1,8 +1,9 @@
 ---
 - name: Create demo user
-  hosts: localhost
+  hosts: all
+  remote_user: root
   become: yes
-  become_method: sudo
+#   become_method: sudo
 
   # python3 -c 'import crypt,getpass;pw=getpass.getpass();print(crypt.crypt(pw) if (pw==getpass.getpass("Confirm: ")) else exit())'
   vars:
@@ -22,4 +23,13 @@
         ssh_key_bits: 2048
         password: "{{ item.password }}"
         update_password: always
+      with_items: "{{ users }}"
+
+    - name: Add users to sudo
+      ansible.builtin.lineinfile:
+        path: /etc/sudoers
+        state: present
+        insertafter: "^root   ALL="
+        line: "{{ item.user }} ALL=(ALL:ALL) ALL"
+        validate: /usr/sbin/visudo -cf %s
       with_items: "{{ users }}"
