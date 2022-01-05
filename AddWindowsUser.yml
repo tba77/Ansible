@@ -1,7 +1,7 @@
 ---
 - name: Add Windows User
-  hosts: Windows
-  remote_user: administrateur
+  hosts: "{{ remote_hosts }}"
+  
 
   vars:
     users:

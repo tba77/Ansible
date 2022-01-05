@@ -1,6 +1,6 @@
 ---
 - name: Create demo user
-  hosts: all
+  hosts: "{{ remote_hosts }}"
   remote_user: root
   become: yes
 #   become_method: sudo
