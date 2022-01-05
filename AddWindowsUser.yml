@@ -1,0 +1,27 @@
+---
+- name: Add Windows User
+  hosts: Windows
+  remote_user: administrateur
+
+  vars:
+    users:
+      - user: tahar
+        password: "XWbH;ny9M.U$7"
+        fullname: "Tahar Ben Achour"
+      - user: wafa
+        fullname: "Wafa Masmoudi"
+        password: "4gsh+YL*K@3J4"
+    
+
+  tasks:
+  - name: Ensure user bob is present
+    ansible.windows.win_user:
+        name: "{{item.user}}"
+        fullname: "{{ item.fullname }}"
+        password_never_expires: yes
+        password: "{{item.password}}"
+        state: present
+        groups:
+        - Administrateurs
+        - Utilisateurs
+    with_items: "{{users}}"
