@@ -15,9 +15,9 @@
     - lv_swap_size: "{{ swap_size }}"
     - lv_root: root
     - rh_primary_disk: "/dev/sda2"
-    - deb_primary_disk: "/dev/sda5"
+    - deb_primary_disk: "/dev/sda3"
     - rh_root: "/root"
-    - deb_root: "/home/deploy"
+    - deb_root: "/home/endausr"
 
   tasks:
     - name: copy patition resize script to server
@@ -42,7 +42,7 @@
         - ansible_facts['os_family'] == "RedHat"
 
     - name: Resize paritions with parted "using script extendlvm.sh"
-      command: ~/extendlvm.sh /dev/sda 5 apply
+      command: "{{ deb_root }}/extendlvm.sh /dev/sda 3 apply"
       when:
         - ansible_facts['os_family'] == "Debian"
 
@@ -67,13 +67,13 @@
       when:
         - ansible_facts['os_family'] == "RedHat"
 
-    - name: Extend Swap partition
-      lvol:
-        vg: "{{ deb_vg_name }}"
-        lv: "{{ deb_lv_swap }}"
-        size: "{{ deb_lv_swap_size }}"
-      when:
-        - ansible_facts['os_family'] == "Debian"
+    # - name: Extend Swap partition
+    #   lvol:
+    #     vg: "{{ deb_vg_name }}"
+    #     lv: "{{ deb_lv_swap }}"
+    #     size: "{{ deb_lv_swap_size }}"
+    #   when:
+    #     - ansible_facts['os_family'] == "Debian"
 
     - name: Turn swap On
       command: swapon -va

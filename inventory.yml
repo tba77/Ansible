@@ -7,37 +7,136 @@ all:
                 ansible_host: 10.10.10.10
                 ansible_ssh_pass: "{{ MyLocalServer_ssh_pass }}"
     LinuxServers:
-      hosts:
-        LinuxServerName:
-          ansible_host: 10.10.20.20
-          ansible_ssh_pass: "{{ MyLoalServer_ssh_pass }}"
-        RH-SRV:
-          ansible_host: 10.1.12.201
-    kubernetes:
-      hosts:
-        Controller01:
-          ansible_host: 10.1.210.60
-        Controller02:
-          ansible_host: 10.1.210.61
-        Worker01:
-          ansible_host: 10.1.210.62
-        Workder02:
-          ansible_host: 10.1.210.63
-        Worker03:
-          ansible_host: 10.1.210.64
-        LoadBalancer:
-          ansible_host: 10.1.210.65
-        VeeamProxy:
-          ansible_host: 10.1.210.20
-      
-    
+      children:
+        Test-servers:
+          hosts:
+            LinuxServerName:
+              ansible_host: 10.10.20.20
+              ansible_ssh_pass: "{{ MyLoalServer_ssh_pass }}"
+        CRM:
+          hosts:
+            Oracle-CRM:
+              ansible_host: 10.1.12.xx
+        DHCP:
+          hosts:
+            dhcp-Srv1:
+              ansible_host: 10.1.15.251
+        EndaRH:
+          hosts:
+            RH-SRV:
+              ansible_host: 10.1.12.201
+        GLPI:
+          hosts:
+            GLPI-9-Srv1:
+              ansible_host: 10.1.210.108
+        GED:
+          hosts:
+            Alfresco:
+              ansible_host: 10.1.22.21
+        kubernetes:
+          hosts:
+            Controller01:
+              ansible_host: 10.1.210.60
+            Controller02:
+              ansible_host: 10.1.210.61
+            Worker01:
+              ansible_host: 10.1.210.62
+            Workder02:
+              ansible_host: 10.1.210.63
+            Worker03:
+              ansible_host: 10.1.210.64
+            LoadBalancer:
+              ansible_host: 10.1.210.65
+            VeeamProxy:
+              ansible_host: 10.1.210.20
+        Veeam:
+          hosts:
+            VeeamProxy35:
+              ansible_host: 10.1.10.51
+            VeeamProxy36:
+              ansible_host: 10.1.10.54
+            VeeamProxy47:
+              ansible_host: 10.1.10.55
+            VeeamProxy50:
+              ansible_host: 10.1.10.56
+            VeeamProxy53:
+              ansible_host: 10.1.10.57
+        T24:
+          hosts:
+            MSSQL-Srv1:
+              ansible_host: 10.1.210.105
+            MSSQL-Srv2:
+              ansible_host: 10.1.210.106
+            tafj-linux-Srv1:
+              ansible_host: 10.1.210.120
+        Formation:
+          hosts:
+            Formation-Srv1:
+              ansible_host: 10.1.210.20
+            Formation-Srv2:
+              ansible_host: 10.1.210.21
+            Formation-Srv3:
+              ansible_host: 10.1.210.22
+            Formation-Srv4:
+              ansible_host: 10.1.210.23
+            Formation-Srv5:
+              ansible_host: 10.1.210.24
+        Bugtracker:
+          hosts:
+            Mantis-Srv1:
+              ansible_host: 10.1.12.109
+                          
+    WindowsServers:
+      children:
+        ActiveDirectory:
+          hosts:
+            AD:
+              ansible_host: 10.1.12.251
+        Antivirus:
+          hosts:
+            Kaspersky:
+              ansible_host: 10.1.15.222
+              ansible_password: "Enda@2020"
+        Affichage_Agences:
+          hosts:
+            Affichage_Dynamique:
+              ansible_host: 10.1.12.67
+        tests:
+          hosts:
+            Test-Srv1:
+              ansible_host: 10.1.210.103
+              ansible_password: "Windows2016FR"
+            Test-Srv2:
+              ansible_host: 10.1.210.104
+              ansible_passowrd: "Windows2016FR"
+            Test-Srv3:
+              ansible_host: 10.1.210.105
+              ansible_password: "Windows2016FR"
+        T24:
+          hosts:
+            tafj-windows:
+              ansible_host: 10.1.210.119
+              ansible_password: "Windows2016FR"
+        Siron:
+          hosts:
+            Siron-Backend:
+              ansible_host: 10.1.21.2
+              ansible_password: "$4ybbmj3#Myau"
+            Siron-Frontend:
+              ansible_host: 10.1.22.2
+              ansible_password: "$4ybbmj3#Myau"
+        Wsus:
+          hosts:
+            Wsus-Srv1:
+              ansible_host: 10.1.12.144
+              ansible_password: "u0UEO+zK6f21"
+        KAV:
+          hosts:
+            Kaspersky-SC-Srv1:
+              ansible_host: 10.1.15.222
+              ansible_password: "3jsep$McKJxch"
 
-WindowsServers:
-  hosts:
-    WindowsServerName:
-      ansible_host: 10.10.30.30
-      ansible_password: "{{ WindowsServerName_password }}"
-  vars:
-    ansible_user: vagrant
-    ansible_connection: winrm
-    ansible_winrm_server_cert_validation: ignore
+      vars:
+        ansible_user: administrateur
+        ansible_connection: winrm
+        ansible_winrm_server_cert_validation: ignore
