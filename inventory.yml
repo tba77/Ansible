@@ -61,6 +61,8 @@ all:
               ansible_host: 10.1.10.56
             VeeamProxy53:
               ansible_host: 10.1.10.57
+            VeeamRep:
+              ansible_host: 10.1.12.137
         T24:
           hosts:
             MSSQL-Srv1:
@@ -85,6 +87,12 @@ all:
           hosts:
             Mantis-Srv1:
               ansible_host: 10.1.12.109
+            Mantis-Srv2:
+              ansible_host: 10.1.12.110
+        OpenVPN:
+          hosts:
+            OpenVPN-Srv1:
+              ansible_host: 10.1.12.215
                           
     WindowsServers:
       children:
