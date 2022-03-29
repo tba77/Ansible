@@ -13,17 +13,16 @@
       - user: keystone
         fullname: "Kystone Audit"
         password: "67ijd-kn546@4Lr?ytTRE"
-    
 
   tasks:
-  - name: Ensure user bob is present
-    ansible.windows.win_user:
+    - name: Ensure user {{user}} is present
+      ansible.windows.win_user:
         name: "{{item.user}}"
         fullname: "{{ item.fullname }}"
-        password_never_expires: yes
+        password_never_expires: true
         password: "{{item.password}}"
         state: present
         groups:
-        - Administrators
-        - Users
-    with_items: "{{users}}"
+          - Administrators
+          - Users
+      with_items: "{{users}}"

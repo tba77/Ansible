@@ -1,0 +1,19 @@
+---
+- name: Harden Windows operating system
+  hosts: "{{remote_host}}"
+  remote_user: "{{remote_login}}"
+
+  tasks:
+    - name: Copy HardenKitty package to destination
+      ansible.windows.win_copy:
+        src: /home/tahar/Projets/Security/HardeningKitty
+        dest: C:\
+
+    - name: Import HardenKitty Module
+      ansible.windows.win_shell: >
+        Import-Module 'C:\HardeningKitty\Invoke-HardeningKitty.ps1'
+
+    - name: Harden Operating system
+      ansible.windows.win_command: >
+          Invoke-HardeningKitty -Mode Audit -FileFindingList
+          .\finding_list_cis_microsoft_windows_server_2016_1607_1.2.0_machine_user_with_winrm_rdp.csv

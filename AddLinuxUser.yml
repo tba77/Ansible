@@ -2,28 +2,33 @@
 - name: Create demo user
   hosts: "{{ remote_hosts }}"
   remote_user: root
-  become: yes
+  become: true
   become_method: sudo
 
-  # python3 -c 'import crypt,getpass;pw=getpass.getpass();print(crypt.crypt(pw) if (pw==getpass.getpass("Confirm: ")) else exit())'
+  # python3 -c 'import crypt,getpass;pw=getpass.getpass();print(crypt.crypt(pw)
+  # if (pw==getpass.getpass("Confirm: ")) else exit())'
   vars:
     users:
       - user: wafa
-        password: $6$y/mVLiIApUiMqNtA$RypiljN.uEYeDa5MmxyF3f64T3auL5La7AQUdZHY.QiRfITjpLf7kUVzBHDwTsMsbmw97H2tMrixtD9WhU1x6/
+        password: >
+            $6$y/mVLiIApUiMqNtA$RypiljN.uEYeDa5MmxyF3f64T3auL5La7
+            AQUdZHY.QiRfITjpLf7kUVzBHDwTsMsbmw97H2tMrixtD9WhU1x6/
       - user: tahar
-        password: $6$OxQg6icHAQ6zgw/5$V7znUoc6LdbO5KLclFoOaNT3U6SwAuK3eNhqVXb1RNidG8oYA5dWylUPYaN8sKaZeh0rfSyKg/.gauwWE3n/X.
-      - user: keystone
-        password: $6$HxBm3XzPIYWKuImb$iDi4wizuuw0wJe26XFT1Uu9Q.ULPviQVhfNHTO5GYvtRrnWblONqamIZ9Eck1xqiM//jFou0Jmbok/LdHOXO0.
+        password: >
+            $6$OxQg6icHAQ6zgw/5$V7znUoc6LdbO5KLclFoOaNT3U6SwAuK3e
+            NhqVXb1RNidG8oYA5dWylUPYaN8sKaZeh0rfSyKg/.gauwWE3n/X.
       - user: nefaa
-        password: $6$dbmNpul0NTYAi7Jy$Vd3Z0nMy/JvucUM6ywmzd4VUptNReZoh99c8Z3grys/tPLh0wLSl1TpLAwM4A/RQOJDQrmbPtuBRImmuaotzW/
+        password: >
+            $6$dbmNpul0NTYAi7Jy$Vd3Z0nMy/JvucUM6ywmzd4VUptNReZoh99
+            c8Z3grys/tPLh0wLSl1TpLAwM4A/RQOJDQrmbPtuBRImmuaotzW/
   tasks:
     - name: Create user demo
       user:
         name: "{{ item.user }}"
         shell: /bin/bash
-        createhome: yes
+        createhome: true
         # group: wheel
-        generate_ssh_key: yes
+        generate_ssh_key: true
         ssh_key_bits: 2048
         password: "{{ item.password }}"
         update_password: always
