@@ -1,14 +1,19 @@
+---
 - name: Prepeare deployment for K8S
   hosts: "{{ remote_host }}"
   remote_user: "{{ remote_login }}"
   become: true
+  become_method: "sudo"
+  
+  vars:
+    password: "=AN,FV9?R*wa!gan/"
 
 
   tasks:
     - name: Add user and generate sshkey
       ansible.builtin.user:
         name: deploy
-        generate_ssh_key: yes
+        generate_ssh_key: true
         ssh_key_bits: 2048
         ssh_key_file: .ssh/id_rsa
         password: "{{ password | password_hash('sha512') }}"
