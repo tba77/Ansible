@@ -2,10 +2,10 @@
 all:
   children:
     LocalServers:
-        hosts:
-              MyLocalServer:
-                ansible_host: 10.10.10.10
-                ansible_ssh_pass: "{{ MyLocalServer_ssh_pass }}"
+      hosts:
+        MyLocalServer:
+          ansible_host: 10.10.10.10
+          ansible_ssh_pass: "{{ MyLocalServer_ssh_pass }}"
     LinuxServers:
       children:
         Test-servers:
@@ -17,14 +17,18 @@ all:
           hosts:
             Oracle-CRM:
               ansible_host: 10.1.12.xx
-        DHCP:
+        Network:
           hosts:
             dhcp-Srv1:
               ansible_host: 10.1.15.251
+            NetBK:
+              ansible_host: 10.1.12.27
         EndaRH:
           hosts:
             RH-SRV:
               ansible_host: 10.1.12.201
+            RH-SRV-Test:
+              ansible_host: 10.1.19.23
         GLPI:
           hosts:
             GLPI-9-Srv1:
@@ -83,6 +87,76 @@ all:
               ansible_host: 10.1.210.23
             Formation-Srv5:
               ansible_host: 10.1.210.24
+        caciopee-dev:
+          hosts:
+            pgsql-dev:
+              ansible_host: 10.1.19.21
+            pgsql-maroc:
+              ansible_host: 10.1.21.23
+            works-dev:
+              ansible_host: 10.1.19.22
+            works-maroc:
+              ansible_host: 10.1.22.24
+        caciopee-preprod:
+          hosts:
+            pgsql1:
+              ansible_host: 10.1.21.14
+            etcd01:
+              ansible_host: 10.1.21.11
+            etcd02:
+              ansible_host: 10.1.21.12
+            lb01:
+              ansible_host: 10.1.21.17
+            lb03:
+              ansible_host: 10.1.23.204
+            file01:
+              ansible_host: 10.1.22.40
+            works01:
+              ansible_host: 10.1.22.31
+            works02:
+              ansible_host: 10.1.22.32
+        caciopee-prod:
+          hosts:
+            pgsql01:
+              ansible_host: 10.1.11.14
+            pgsql02:
+              ansible_host: 10.1.11.15
+            pgslq03:
+              ansible_host: 10.1.11.16
+            etcd01:
+              ansible_host: 10.1.11.11
+            etcd02:
+              ansible_host: 10.1.11.12
+            etcd03:
+              ansible_host: 10.1.11.13
+            lb01:
+              ansible_host: 10.1.11.17
+            lb02:
+              ansible_host: 10.1.11.18
+            lb03:
+              ansible_host: 10.1.12.204
+            lb04:
+              ansible_host: 10.1.12.206
+            file01:
+              ansible_host: 10.1.13.40
+            works01:
+              ansible_host: 10.1.13.31
+            works02:
+              ansible_host: 10.1.13.32
+            works03:
+              ansible_host: 10.1.13.33
+            works04:
+              ansible_host: 10.1.13.34
+            works05:
+              ansible_host: 10.1.13.35
+            works06:
+              ansible_host: 10.1.13.36
+
+        Migration:
+          hosts:
+            Mysql-Migration:
+              ansible_host: 10.1.21.30
+
         Bugtracker:
           hosts:
             Mantis-Srv1:
@@ -93,7 +167,7 @@ all:
           hosts:
             OpenVPN-Srv1:
               ansible_host: 10.1.12.215
-                          
+
     WindowsServers:
       children:
         ActiveDirectory:
@@ -120,11 +194,17 @@ all:
             Test-Srv3:
               ansible_host: 10.1.210.105
               ansible_password: "Windows2016FR"
+            Windows-Hardning:
+              ansible_host: 10.1.210.90
+              ansible_password: "Windows2016US"
         T24:
           hosts:
             tafj-windows:
               ansible_host: 10.1.210.119
               ansible_password: "Windows2016FR"
+            T24-UpEnv-Srv1:
+              ansible_host: 10.1.12.75
+              ansible_password: "hRdTo&hf*?bz9"
         Siron:
           hosts:
             Siron-Backend:
@@ -143,7 +223,17 @@ all:
             Kaspersky-SC-Srv1:
               ansible_host: 10.1.15.222
               ansible_password: "3jsep$McKJxch"
-
+        NavisionBC:
+          hosts:
+            navision-bc-Srv1:
+              ansible_host: 10.1.19.50
+              ansible_password: "hkYer*3M@vx_3"
+        Templates:
+          hosts:
+            Windows:
+              ansible_host: 10.1.210.99
+              ansible_password: "Windows2016US"
+              ansible_user: administrator
       vars:
         ansible_user: administrateur
         ansible_connection: winrm
