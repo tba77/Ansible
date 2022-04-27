@@ -10,17 +10,11 @@
   vars:
     users:
       - user: wafa
-        password: >
-            $6$y/mVLiIApUiMqNtA$RypiljN.uEYeDa5MmxyF3f64T3auL5La7
-            AQUdZHY.QiRfITjpLf7kUVzBHDwTsMsbmw97H2tMrixtD9WhU1x6/
+        password: $6$y/mVLiIApUiMqNtA$RypiljN.uEYeDa5MmxyF3f64T3auL5La7AQUdZHY.QiRfITjpLf7kUVzBHDwTsMsbmw97H2tMrixtD9WhU1x6/
       - user: tahar
-        password: >
-            $6$OxQg6icHAQ6zgw/5$V7znUoc6LdbO5KLclFoOaNT3U6SwAuK3e
-            NhqVXb1RNidG8oYA5dWylUPYaN8sKaZeh0rfSyKg/.gauwWE3n/X.
+        password: $6$OxQg6icHAQ6zgw/5$V7znUoc6LdbO5KLclFoOaNT3U6SwAuK3eNhqVXb1RNidG8oYA5dWylUPYaN8sKaZeh0rfSyKg/.gauwWE3n/X.
       - user: nefaa
-        password: >
-            $6$dbmNpul0NTYAi7Jy$Vd3Z0nMy/JvucUM6ywmzd4VUptNReZoh99
-            c8Z3grys/tPLh0wLSl1TpLAwM4A/RQOJDQrmbPtuBRImmuaotzW/
+        password: $6$dbmNpul0NTYAi7Jy$Vd3Z0nMy/JvucUM6ywmzd4VUptNReZoh99c8Z3grys/tPLh0wLSl1TpLAwM4A/RQOJDQrmbPtuBRImmuaotzW/
   tasks:
     - name: Create user demo
       user:

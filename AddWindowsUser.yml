@@ -10,9 +10,9 @@
       - user: wafa
         fullname: "Wafa Masmoudi"
         password: "4gsh+YL*K@3J4"
-      - user: keystone
-        fullname: "Kystone Audit"
-        password: "67ijd-kn546@4Lr?ytTRE"
+      - user: lassaad
+        fullname: "Lassaad Belhadj"
+        password: "kqP$kb.+cj-9r/"
 
   tasks:
     - name: Ensure user {{user}} is present
