@@ -230,6 +230,8 @@ all:
               ansible_password: "hkYer*3M@vx_3"
         Templates:
           hosts:
+            linux:
+              ansible_host: 10.1.210.101
             Windows:
               ansible_host: 10.1.210.99
               ansible_password: "Windows2016US"
