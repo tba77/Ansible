@@ -15,6 +15,8 @@
         password: $6$OxQg6icHAQ6zgw/5$V7znUoc6LdbO5KLclFoOaNT3U6SwAuK3eNhqVXb1RNidG8oYA5dWylUPYaN8sKaZeh0rfSyKg/.gauwWE3n/X.
       - user: nefaa
         password: $6$dbmNpul0NTYAi7Jy$Vd3Z0nMy/JvucUM6ywmzd4VUptNReZoh99c8Z3grys/tPLh0wLSl1TpLAwM4A/RQOJDQrmbPtuBRImmuaotzW/
+      # - user: moulayali
+      #  password: $6$s2CCgxgBJIm6PljQ$m9SfBw4QCkRYWqIbYe3VAdjGe8GJUBhTM5pbF5IapytAk0pw06fRlUbuJf8a1EjHAFhNSCxko7uNAyXAeH/.d/
   tasks:
     - name: Create user demo
       user:
