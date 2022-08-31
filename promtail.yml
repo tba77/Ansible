@@ -1,0 +1,56 @@
+---
+- hosts: "{{remote_host}}"
+  remote_user: "{{remote_login}}"
+  become: true
+
+  tasks:
+
+    - name: Copy promtail binary
+      ansible.builtin.copy:
+        src: /home/tahar/Projets/IaC/monitoring/promtail/promtail-linux-amd64
+        dest: /usr/local/bin/promtail-linux-amd64
+        owner: root
+        group: root
+        mode: "0755"
+
+    - name: Create promtail user
+      user:
+        name: promtail
+        shell: /bin/false
+        createhome: false
+
+    - name: Create promtail configuration directory
+      ansible.builtin.file:
+        path: /etc/promtail
+        state: directory
+        owner: promtail
+        mode: '0755'
+
+    - name: copy configuration filename
+      template:
+        src: ~/Projets/IaC/monitoring/promtail/promtail-config.yml.j2
+        dest: /etc/promtail/promtail-config.yml
+        owner: root
+        group: root
+        mode: "0644"
+
+
+    - name: Create promtail service
+      ansible.builtin.copy:
+        src: /home/tahar/Projets/IaC/monitoring/promtail/promtail.service
+        dest: /usr/lib/systemd/system/promtail.service
+        owner: root
+        group: root
+        mode: "0644"
+
+    - name: Issue daemon-reload, start and enable promtail service
+      ansible.builtin.systemd:
+        daemon-reload: true
+        state: started
+        enabled: true
+        name: promtail
+
+    - name: Restart service promtail
+      ansible.builtin.systemd:
+        state: restarted
+        name: promtail
