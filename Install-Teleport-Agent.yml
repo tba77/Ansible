@@ -1,0 +1,113 @@
+---
+- hosts: "{{remote_host}}"
+  remote_user: "{{remote_login}}"
+
+  vars:
+    teleport_binaries:
+      - tsh
+      - tbot
+      - tctl
+      - teleport
+    ca_certificates:
+      - AAACertificateServices.crt
+      - SectigoRSADomainValidationSecureServerCA.crt
+      - USERTrustRSAAAACA.crt
+
+  tasks:
+    - name: Generate teleport node token
+      shell: "/usr/local/bin/tctl nodes add --roles=node,app"
+      delegate_to: 127.0.0.1
+      register: tctl_output
+    - debug:
+        var: tctl_output
+    - debug:
+        msg: "{{tctl_output.stdout_lines[0]}}"
+    - set_fact:
+        get_token: "{{tctl_output.stdout_lines[0].split(':')|trim}}"
+    - debug:
+        msg: "{{get_token[1]}}"
+    - set_fact:
+        token: "{{get_token[1].split('.')|trim|replace(' ','')}}"
+    - debug:
+        msg: "{{token}}"
+    - debug:
+        msg: "{{ansible_host}}"
+
+    - name: Copy teleport binaries
+      ansible.builtin.copy:
+        src: "/home/tahar/Projets/IaC/Teleport/teleport/{{ item }}"
+        dest: /usr/local/bin/
+        owner: root
+        group: root
+        mode: "0755"
+      with_items: "{{teleport_binaries}}"
+      become: true
+      become_method: "sudo"
+
+    - name: Copy Root certificates
+      ansible.builtin.copy:
+        src: "/home/tahar/Projets/SSL/{{item}}"
+        dest: /etc/ssl/certs
+        owner: root
+        group: root
+        mode: "0600"
+      with_items: "{{ca_certificates}}"
+      become: true
+      become_method: "sudo"
+
+    - name: Update root certificates
+      shell: update-ca-trust
+      become: true
+      become_method: "sudo"
+
+    - name: add teleport entry to /etc/hosts
+      ansible.builtin.lineinfile:
+        path: /tmp/testfile
+        line: 10.1.12.113     teleport.endatamweel.tn
+        create: true
+
+    - name: Create required directories
+      ansible.builtin.file:
+        path: /etc/teleport
+        owner: root
+        group: root
+        state: directory
+        mode: "0755"
+      become: true
+      become_method: "sudo"
+
+    - name: Copy teleport config file
+      template:
+        src: /home/tahar/Projets/IaC/Teleport/manifests/teleport-ssh.yaml.j2
+        dest: /etc/teleport/teleport.yaml
+        mode: "0644"
+        owner: root
+        group: root
+      become: true
+      become_method: "sudo"
+
+    - name: Create teleport service
+      ansible.builtin.copy:
+        src: /home/tahar/Projets/IaC/Teleport/teleport.service
+        dest: /usr/lib/systemd/system/teleport.service
+        owner: root
+        group: root
+        mode: "0644"
+      become: true
+      become_method: "sudo"
+
+    - name: Issue daemon-reload, start and enable teleport service
+      ansible.builtin.systemd:
+        daemon-reload: true
+        state: started
+        enabled: true
+        name: teleport
+      become: true
+      become_method: "sudo"
+
+    - name: Restart service teleport
+      ansible.builtin.systemd:
+        state: restarted
+        name: teleport
+      become: true
+      become_method: "sudo"
