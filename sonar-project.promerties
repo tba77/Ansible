@@ -1,0 +1,2 @@
+sonar.projectKey=tahar.benachour_ansible-common-config_AYODsJuXMv2gNVLE0GId
+sonar.qualitygate.wait=true
