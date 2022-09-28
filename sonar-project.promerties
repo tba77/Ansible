@@ -1,6 +1,0 @@
-# Mandatory fields
-sonar.projectKey=ansible.project
-sonar.qualitygate.wait=true
-
-# Comma-separated paths to directories with sources (required)
-sonar.sources=.
