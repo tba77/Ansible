@@ -19,6 +19,5 @@ sonarqube-check:
   script:
     - sonar-scanner
   allow_failure: true
-  when: always
   only:
     - master  # or the name of your main branch
