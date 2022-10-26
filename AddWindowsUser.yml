@@ -10,9 +10,9 @@
       - user: wafa
         fullname: "Wafa Masmoudi"
         password: "4gsh+YL*K@3J4"
-      - user: lassaad
-        fullname: "Lassaad Belhadj"
-        password: "kqP$kb.+cj-9r/"
+      # - user: lassaad
+      #   fullname: "Lassaad Belhadj"
+      #   password: "kqP$kb.+cj-9r/"
 
   tasks:
     - name: Ensure user {{user}} is present
@@ -23,6 +23,6 @@
         password: "{{item.password}}"
         state: present
         groups:
-          - Administrators
-          - Users
+          - Administrateurs
+          - Utilisateurs
       with_items: "{{users}}"
