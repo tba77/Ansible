@@ -12,6 +12,10 @@
       - AAACertificateServices.crt
       - SectigoRSADomainValidationSecureServerCA.crt
       - USERTrustRSAAAACA.crt
+    rc_directory:
+      - /etc/rc2.d/S99teleport
+      - /etc/rc3.d/S99teleport
+      - /etc/rc5.d/S99teleport
 
   tasks:
     - name: Generate teleport node token
@@ -71,7 +75,7 @@
 
     - name: add teleport entry to /etc/hosts
       ansible.builtin.lineinfile:
-        path: /tmp/testfile
+        path: /etc/hosts
         line: 10.1.12.113     teleport.endatamweel.tn
         create: true
       become: true
@@ -104,8 +108,35 @@
         owner: root
         group: root
         mode: "0644"
+      when:
+        - ansible_distribution_major_version >= "7"
       become: true
       become_method: "sudo"
+
+    - name: Create teleport service
+      ansible.builtin.copy:
+        src: /home/tahar/Projets/IaC/Teleport/teleport.sh
+        dest: /etc/init.d/
+        owner: root
+        group: root
+        mode: "0755"
+      when:
+        - ansible_distribution_major_version < "7"
+      become: true
+      become_method: "sudo"
+
+    - name: Enable service at startup
+      ansible.builtin.file:
+        src: /etc/init.d/teleport.sh
+        dest: "{{ item }}"
+        owner: root
+        group: root
+        state: link
+      with_items:
+        - "{{rc_directory}}"
+      when:
+        - ansible_distribution_major_version < "7"
+
 
     - name: Issue daemon-reload, start and enable teleport service
       ansible.builtin.systemd:
@@ -113,6 +144,8 @@
         state: started
         enabled: true
         name: teleport
+      when:
+        - ansible_distribution_major_version >= "7"
       become: true
       become_method: "sudo"
 
@@ -120,5 +153,7 @@
       ansible.builtin.systemd:
         state: restarted
         name: teleport
+      when:
+        - ansible_distribution_major_version >= "7"
       become: true
       become_method: "sudo"
