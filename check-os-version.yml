@@ -1,0 +1,9 @@
+---
+- name: Check OS Version
+  hosts: Linux-Servers
+  remote_user: "{{ remote_login }}"
+  gather_facts: true
+  become: false
+  tasks:
+    - name: Distribution check
+      ansible.builtin.debug: msg="{{ ansible_os_family }} {{ ansible_distribution }} {{ ansible_distribution_major_version }}"
