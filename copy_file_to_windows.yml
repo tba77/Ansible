@@ -1,11 +1,8 @@
 ---
 - name: win_copy module demo
-  hosts: all
+  hosts: "{{ remote_host }}"
   become: false
-  gather_facts: false
-  vars:
-    source: "report.txt"
-    destination: "Desktop/report.txt"
+  gather_facts: true
   tasks:
     - name: copy report.txt
       ansible.windows.win_copy:
