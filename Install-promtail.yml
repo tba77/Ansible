@@ -1,0 +1,30 @@
+---
+- name: Install promtail on linux servers
+  hosts: "{{ remote_host }}"
+  remote_user: "{{ remote_login }}"
+  become: true
+  become_method: "sudo"
+
+  tasks:
+
+  - name: copy binaries
+    ansible.builtin.template:
+      src: ~/Projets/IaC/monitoring/promtail/promtail-linux-amd64
+      dest: /usr/local/bin/promtail-linux-amd64
+      user: root
+      group: root
+      mode: "0755"
+
+  - name: Create configuration directories
+    ansible.builtin.file:
+      path: /etc/promtail
+      state: directory
+      mode: '0755'
+
+  - name: copy configuration filename
+    ansible.builtin.template:
+      src: ~/Projets/IaC/monitoring/promtail/promtail-config.yml.j2
+      dest: /etc/promtail/promtail-config.yml
+      user: root
+      group: root
+      mode: "0644"
