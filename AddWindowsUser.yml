@@ -3,17 +3,26 @@
   hosts: "{{ remote_hosts }}"
 
   vars:
-    users:
+    admins:
       - user: tahar
         password: "XWbH;ny9M.U$7"
         fullname: "Tahar Ben Achour"
       - user: wafa
         fullname: "Wafa Masmoudi"
         password: "4gsh+YL*K@3J4"
-      # - user: lassaad
-      #   fullname: "Lassaad Belhadj"
-      #   password: "kqP$kb.+cj-9r/"
-
+      - user: nefaa
+        fullname: "Nefaa Haj Hassine"
+        password: "7f?eiX@MH9Vheh3"
+      - user: ahmed
+        password: "v+exeKHM?mjif3"
+        fullname: "Ahmed Nasri"
+    helpdesk:
+      - user: walid
+        password: "dqmlhfqsdoh"
+        fullname: "Walid Rouissi"
+      - user: walidg
+        password: "qsmlfjqmlqjsd"
+        fullname: "Walid Ghanmi"
   tasks:
     - name: Ensure user {{user}} is present
       ansible.windows.win_user:
@@ -23,6 +32,9 @@
         password: "{{item.password}}"
         state: present
         groups:
-          - Administrateurs
-          - Utilisateurs
-      with_items: "{{users}}"
+          - Administrators
+          - Users
+      with_items: "{{admins}}"
+    
+
+
