@@ -1,3 +1,4 @@
+---
 - name: Generate an OpenSSH keypair
   hosts: "{{ remote_host }}"
   remote_user: "{{ remote_login }}"
