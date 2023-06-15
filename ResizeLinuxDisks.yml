@@ -8,7 +8,7 @@
 
   vars:
     # - rh_vg_name: "centos_centos"
-    - rh_vg_name: "ol_oraclelinux"
+    - rh_vg_name: "ol"
     - deb_vg_name: "{{ ansible_hostname }}-vg"
     - rh_lv_swap: "/dev/{{ rh_vg_name }}/swap"
     - deb_lv_swap: "/dev/{{ deb_vg_name }}/swap_1"
