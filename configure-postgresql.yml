@@ -1,0 +1,70 @@
+---
+- name: configure postgre
+  hosts: "{{remote_host}}"
+  remote_user: "{{remote_login}}"
+  become: true
+
+  vars:
+    pgsql_node1_ip: 10.1.21.14
+    postgresql_user: postgres
+    postgresql_group: postgres
+    postgresql_password: "KcCH3W=fR:j"
+    postgresql_replica_user: replicator
+    postgres_replica_password: "uNbA4p@<%+9"
+    postgresql_worksuser: worksuser
+    postgresql_works_db: works_db
+    postgresql_worksuser_password: "9cjv*RbJfcTom"
+
+
+  tasks:
+  
+  
+  - name: Set password for postgres user
+    community.postgresql.postgresql_user:
+      name: postgres
+      login_host: "{{ pgsql_node1_ip }}"
+      password: "{{ postgresql_password }}"
+    become: true
+    become_user: "{{ postgresql_user }}"
+    when:
+      - ansible_facts['hostname'] == "PgSQL01-preprod"
+
+  - name: Create replica user
+    community.postgresql.postgresql_user:
+      name: "{{ postgresql_replica_user }}"
+      password: "{{ postgres_replica_password }}"
+      encrypted: true
+      role_attr_flags: REPLICATION
+    become: true
+    become_user: "{{ postgresql_user }}"
+    when:
+      - ansible_facts['hostname'] == "PgSQL01-preprod"
+
+  - name: Create works user
+    community.postgresql.postgresql_user:
+      name: "{{ postgresql_worksuser }}"
+      password: "{{ postgresql_worksuser_password }}"
+      encrypted: true
+      role_attr_flags: CREATEDB
+    become: true
+    become_user: "{{ postgresql_user }}"
+    when:
+      - ansible_facts['hostname'] == "PgSQL01-preprod"
+
+  - name: Create Works Database
+    community.postgresql.postgresql_db:
+      name: "{{ postgresql_works_db }}"
+      encoding: UTF-8
+    become: true
+    become_user: "{{ postgresql_user }}"
+    when: 
+      - ansible_facts['hostname'] == "PgSQL01-preprod"
+
+  - name: Set owner as "{{ postgresql_worksuser }}" for Database "{{ postgresql_works_db }}"
+    community.postgresql.postgresql_owner:
+      db: "{{ postgresql_works_db }}"
+      new_owner: "{{ postgresql_worksuser }}"
+    become: true
+    become_user: "{{ postgresql_user }}"
+    when:
+      - ansible_facts['hostname'] == "PgSQL01-preprod"
