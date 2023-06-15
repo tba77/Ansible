@@ -1,0 +1,42 @@
+---
+- name: Add Prometheus targets for node exporter
+  hosts: "{{remote_host}}"
+  remote_user: "{{remote_login}}"
+
+  vars:
+    ip_addresses:
+      - host: pgsql1
+        ip: 10.1.11.14
+      - host: works1
+        ip: 10.1.13.31
+      - host: works2
+        ip: 10.1.13.32
+      - host: works3
+        ip: 10.1.13.33
+      - host: works4
+        ip: 10.1.13.34
+      - host: works5
+        ip: 10.1.13.35
+      - host: works6
+        ip: 10.1.13.36
+      - host: haproxy3
+        ip: 10.1.12.204
+      - host: haproxy4
+        ip: 10.1.12.206
+      - host: files1
+        ip: 10.1.13.40
+
+  tasks:
+
+    - name: get ip address
+      debug:
+        msg: "{{ item.host }} {{ item.ip }}"
+      with_items: "{{ip_addresses}}"
+
+    - name: Add target to configuration file
+      ansible.builtin.lineinfile:
+        path: /home/tahar/prometheus-grafana/prometheus/prometheus.yml
+        line: "      - {{item.ip}}:9100"
+        insertafter: "- 10.1.19.23:9100"
+        create: true
+      with_items: "{{ip_addresses}}"
