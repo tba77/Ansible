@@ -1,0 +1,50 @@
+---
+- name: install node exporter
+  hosts: "{{ remote_host }}"
+  remote_user: "{{ remote_login }}"
+  become: true
+
+  tasks:
+    - name: Copy node exporter binary
+      ansible.builtin.copy:
+        src: ~/Projets/IaC/monitoring/node exporter/node_exporter
+        dest: /usr/local/bin/node_exporter
+        mode: "0755"
+        owner: root
+        group: root
+
+    - name: Copy node exporter systemd service file
+      ansible.builtin.copy:
+        src: ~/Projets/IaC/monitoring/node exporter/node_exporter.service
+        dest: /usr/lib/systemd/system/node_exporter.service
+        mode: "0644"
+        owner: root
+        group: root
+
+    - name: Create node_exporter user and group
+      user:
+        name: node_exporter
+        shell: /bin/false
+        createhome: false
+
+    - name: Open port 9100 on firewall
+      ansible.posix.firewalld:
+        port: 9100/tcp
+        permanent: true
+        state: enabled
+      when:
+        - ansible_facts['os_family'] == "RedHat"
+
+    - name: Restart firewalld service
+      ansible.builtin.systemd:
+        name: firewalld
+        state: restarted
+      when:
+        - ansible_facts['os_family'] == "RedHat"
+
+    - name: Issue daemon-reload, start and enable service
+      ansible.builtin.systemd:
+        daemon_reload: true
+        state: started
+        enabled: true
+        name: node_exporter
